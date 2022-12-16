@@ -1,3 +1,17 @@
 a {
   cursor: pointer;
 }
+
+.h-3 {
+  height: 1rem;
+  margin-top: 0.5rem;
+}
+
+.rotate {
+  transform: rotate(180deg);
+  margin-bottom: 1rem;
+}
+
+path {
+  pointer-events: none;
+}
