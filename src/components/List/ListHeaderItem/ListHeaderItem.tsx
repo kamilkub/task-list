@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import "./ListHeaderItem.css";
 import { Product } from "../../../types/Product";
 
@@ -12,10 +12,11 @@ const ListHeaderItem: FC<ListHeaderItemProps> = ({
   sortFunction,
   productField,
 }): JSX.Element => {
-  const [sortOrder, setSortOrder] = useState<boolean>(false);
+  const sortOrder = useRef<boolean>(false);
+
   const sort = (): void => {
-    sortFunction(sortBy, !sortOrder);
-    setSortOrder(!sortOrder);
+    sortFunction(sortBy, !sortOrder.current);
+    sortOrder.current = !sortOrder.current;
   };
 
   return (

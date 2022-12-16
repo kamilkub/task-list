@@ -9,12 +9,26 @@ import { searchProvidedProducts } from "../../service/ProductSearchingService";
 
 type ListProps = {};
 
+export type SearchCriteriaState = {
+  name: boolean;
+  description: boolean;
+  price: boolean;
+};
+
 const List: FC<ListProps> = (): JSX.Element => {
   const [products, setProducts] = useState<Product[]>(productsData);
 
-  const isSearchByNameSet = useRef<boolean>(false);
-  const isSearchByDescSet = useRef<boolean>(false);
-  const isSearchByPriceSet = useRef<boolean>(false);
+  const searchCriteriaState = useRef<SearchCriteriaState>({
+    name: false,
+    description: false,
+    price: false,
+  });
+
+  const isAnyCriteriaSet = (): boolean => {
+    return !Object.values(searchCriteriaState.current).every(
+      (criteria: boolean) => criteria === false
+    );
+  };
 
   const sort = (sortBy: keyof Product, sortOrder: boolean): void => {
     let sortedProducts = [];
@@ -51,25 +65,34 @@ const List: FC<ListProps> = (): JSX.Element => {
     } else if (
       foundProducts.length == 0 &&
       products.length < productsData.length &&
-      (isSearchByDescSet.current ||
-        isSearchByNameSet.current ||
-        isSearchByPriceSet.current)
+      isAnyCriteriaSet()
     ) {
       setProducts(products);
     } else {
       setProducts(productsData);
     }
+
+    console.log(searchCriteriaState.current);
   };
 
   const renderSearchInputs = (): JSX.Element => {
     return (
       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <ListSearchInput searchFunction={searchProducts} searchBy={"name"} />
         <ListSearchInput
+          searchFunction={searchProducts}
+          criteriaState={searchCriteriaState.current}
+          searchBy={"name"}
+        />
+        <ListSearchInput
+          criteriaState={searchCriteriaState.current}
           searchFunction={searchProducts}
           searchBy={"description"}
         />
-        <ListSearchInput searchFunction={searchProducts} searchBy={"price"} />
+        <ListSearchInput
+          criteriaState={searchCriteriaState.current}
+          searchFunction={searchProducts}
+          searchBy={"price"}
+        />
       </tr>
     );
   };

@@ -1,16 +1,20 @@
 import React, { FC } from "react";
 import { Product } from "../../../types/Product";
+import { SearchCriteriaState } from "../List";
 
 type ListSearchInputProps = {
   searchFunction: any;
   searchBy: keyof Product;
+  criteriaState: SearchCriteriaState;
 };
 
 const ListSearchInput: FC<ListSearchInputProps> = ({
   searchFunction,
   searchBy,
+  criteriaState,
 }): JSX.Element => {
   const searchProducts = (input: HTMLInputElement): void => {
+    criteriaState[searchBy] = !!input.value;
     searchFunction(input.value, searchBy);
   };
 
