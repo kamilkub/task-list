@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 
 type ListItemProps = {
-
     name: string;
     description: string;
     price: number;
