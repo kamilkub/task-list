@@ -1,19 +1,27 @@
-import Product from "../interfaces/Product";
-import {ProductSearchSortType} from "../enums/ProductSearchSortType";
+import { Product } from "../types/Product";
 
+export const literalSort = (
+  products: Product[],
+  reversed: boolean,
+  sortBy: keyof Product
+): Product[] => {
+  return products.sort((prev: Product, curr: Product) =>
+    reversed
+      ? prev[sortBy].toString().localeCompare(curr[sortBy].toString())
+      : curr[sortBy].toString().localeCompare(prev[sortBy].toString())
+  );
+};
 
-export const literalSort = (products: Product[], reversed: boolean, sortBy: ProductSearchSortType): Product[] => {
-
-    return products.sort((prev, curr) =>
-        //@ts-ignore
-        reversed ? prev[sortBy].toString().localeCompare(curr[sortBy]) : curr[sortBy].toString().localeCompare(prev[sortBy])
-    );
-}
-
-export const numericSort = (products: Product[], reversed: boolean, sortBy: ProductSearchSortType): Product[] => {
-    return products.sort((prev, curr) =>
-        //@ts-ignore
-        reversed ? prev[sortBy] - curr[sortBy] : curr[sortBy] - prev[sortBy]
-    );
-}
-
+export const numericSort = (
+  products: Product[],
+  reversed: boolean,
+  sortBy: keyof Product
+): Product[] => {
+  return products.sort((prev: Product, curr: Product) =>
+    reversed
+      ? Number.parseFloat(prev[sortBy].toString()) -
+        Number.parseFloat(curr[sortBy].toString())
+      : Number.parseFloat(curr[sortBy].toString()) -
+        Number.parseFloat(prev[sortBy].toString())
+  );
+};

@@ -1,10 +1,13 @@
-import Product from "../interfaces/Product";
+import { Product } from "../types/Product";
 
-export const searchProvidedProducts = (products: Product[], name: string, searchBy: string): Product[] => {
-    if (!name) return [];
+export const searchProvidedProducts = (
+  products: Product[],
+  name: string,
+  searchBy: keyof Product
+): Product[] => {
+  if (!name) return [];
 
-    // @ts-ignore
-    return products.filter((product: Product) => product[searchBy].toString().includes(name))
-}
-
-
+  return products.filter((product: Product) =>
+    product[searchBy].toString().includes(name)
+  );
+};
